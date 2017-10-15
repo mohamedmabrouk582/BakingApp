@@ -37,12 +37,7 @@ public class BakingWidget extends AppWidgetProvider {
     }
 
 
-    public static int randInt(int min, int max) {
-        Random rand = new Random();
-        int randomNum = rand.nextInt((max - min) + 1) + min;
 
-        return randomNum;
-    }
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them

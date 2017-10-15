@@ -35,9 +35,9 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
             android:text="TextView" />
 
         <ImageView
@@ -49,7 +49,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginEnd="@dimen/_30sdp"
             android:layout_marginRight="@dimen/_30sdp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="@dimen/_15sdp"
             app:srcCompat="@drawable/food_drink" />
 
         <TextView

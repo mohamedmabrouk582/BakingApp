@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingBottom="10sp"
+        android:paddingBottom="@dimen/_10sdp"
         android:scrollbars="vertical"/>
 
 </android.support.v4.widget.SwipeRefreshLayout>
