@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.mohamed.bakingapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="com.android.example.wordlistsqlwithcontentprovider.PERMISSION" />
+
+    <application
+        android:name=".Applcation.MyApp"
+        android:allowBackup="true"
+        android:icon="@drawable/baking"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/baking"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <!-- <receiver android:name=".utils.NetworkChangeReceiver" -->
+        <!-- &gt; -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
+        <!-- <action android:name="android.net.wifi.WIFI_STATE_CHANGED" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+        <activity android:name=".ui.MealListActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.MealStepsActivity"
+            android:parentActivityName=".ui.MealListActivity" />
+        <activity
+            android:name=".ui.IngredientsActivity"
+            android:parentActivityName=".ui.MealStepsActivity" />
+        <activity
+            android:name=".ui.StepsPagerActivity"
+            android:parentActivityName=".ui.MealStepsActivity" />
+
+        <provider
+            android:name=".ContentProvider.MealProvider"
+            android:authorities="com.example.mohamed.bakingapp.ContentProvider.contentprovider"
+            android:exported="true"
+            android:multiprocess="true"
+            android:readPermission="true"
+            android:writePermission="true" />
+
+        <receiver android:name=".widget.BakingWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
+        </receiver>
+    </application>
+
+</manifest>
