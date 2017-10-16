@@ -74,10 +74,10 @@ public class MealStepsActivity extends SingleFragmentActivity implements MealSte
                     break;
             }
 try   {
-//    DisplayMetrics displayMetrics = new DisplayMetrics();
-//    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-//    int height = displayMetrics.heightPixels;
-//    int width = displayMetrics.widthPixels;
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    int height = displayMetrics.heightPixels;
+    int width = displayMetrics.widthPixels;
 //    if (rootView != null) {
 //        ViewGroup parent = (ViewGroup) rootView.getParent();
 //        if (parent != null)
