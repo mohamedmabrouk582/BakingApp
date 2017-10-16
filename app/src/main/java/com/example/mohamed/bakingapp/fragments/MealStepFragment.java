@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mohamed.bakingapp.R;
@@ -34,6 +35,7 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by mohamed on 14/10/2017.
@@ -47,6 +49,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
     private SimpleExoPlayerView mSimpleExoPlayerView;
     private SimpleExoPlayer player;
     public static long position=0;
+    private ImageView mImageView;
     public static MealStepFragment newFragment(MealStep list){
         Bundle bundle=new Bundle();
         bundle.putParcelable(STEPS, list);
@@ -66,11 +69,13 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         View view=inflater.inflate(R.layout.meal_step_view_fragment,container,false);
         mealDes= (TextView) view.findViewById(R.id.step_descrepation);
         mealStep=getArguments().getParcelable(STEPS);
+        mImageView= (ImageView) view.findViewById(R.id.step_image);
         stepViewPresenter=new StepViewPresenter(this,mealStep);
         mSimpleExoPlayerView= (SimpleExoPlayerView) view.findViewById(R.id.player);
         mSimpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.meal));
         mSimpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH);
           String videoUrl=mealStep.getVideoURL();
+
         if (!videoUrl.equals("")) {
             initializePlayer(Uri.parse(videoUrl));
             mSimpleExoPlayerView.setVisibility(View.VISIBLE);
@@ -100,7 +105,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
 
         if (width > height) {
             mealDes.setVisibility(View.GONE);
-
+            mImageView.setVisibility(View.GONE);
             mSimpleExoPlayerView.setMinimumHeight(height);
             mSimpleExoPlayerView.setMinimumWidth(height);
             restExoPlayerAfterRotation(position, true);
@@ -121,6 +126,13 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
     @Override
     public void onResume() {
         super.onResume();
+        if (mealStep.getThumbnailURL()==""){
+           mImageView.setVisibility(View.GONE);
+        }else {
+            mImageView.setVisibility(View.VISIBLE);
+            Picasso.with(getActivity()).load(Uri.parse(mealStep.getThumbnailURL()))
+                    .placeholder(R.drawable.meal).error(R.drawable.bakinglogo).into(mImageView);
+        }
         stepViewPresenter.LoadStepData();
         //player.setAutoPlay(true);
     }

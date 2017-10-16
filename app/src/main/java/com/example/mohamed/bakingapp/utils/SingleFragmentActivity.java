@@ -41,15 +41,20 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
 
         if (fragment==null){
             fragment=CreateFragment();
-
             fragmentManager.beginTransaction().replace(R.id.Fragment_Container,fragment).commit();
         }
     }
 
     @Override
-    protected void onStop()
-    {
-//        unregisterReceiver(networkChangeReceiver);
-        super.onStop();
+    public void onDestroy() {
+        try{
+            if(networkChangeReceiver!=null)
+                unregisterReceiver(networkChangeReceiver);
+        }catch(Exception e)
+        {
+
+        }
+        super.onDestroy();
+
     }
 }

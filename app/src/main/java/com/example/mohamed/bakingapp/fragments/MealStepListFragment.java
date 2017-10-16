@@ -75,7 +75,6 @@ public class MealStepListFragment extends Fragment  implements MealView,MealStep
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        setHasOptionsMenu(true);
         dataManager=((MyApp) getActivity().getApplication()).getDataManager();
     }
     @Nullable
@@ -98,35 +97,12 @@ public class MealStepListFragment extends Fragment  implements MealView,MealStep
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-            inflater.inflate(R.menu.menu,menu);
-    }
 
-    private void insert(){
-        dataManager.clear();
-        dataManager.saveMealName(meal.getName());
-         Dboperation.getInstance(getActivity()).delete();
-        for (MealIngredients mealIngredients:meal.getIngredients()) {
-            Dboperation.getInstance(getActivity()).insertMeal(mealIngredients);
-        }
-        Toast.makeText(getActivity(),Dboperation.getInstance(getActivity()).getMeals().size()+ "", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==R.id.add_widget){
-          insert();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onResume() {
         super.onResume();
         mealViewPresenter.loadMealData();
-        insert();
     }
 
     private void initRecycler(){

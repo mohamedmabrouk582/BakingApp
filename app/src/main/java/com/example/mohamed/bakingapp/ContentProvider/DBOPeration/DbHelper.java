@@ -24,6 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table "+ TableIngredients.NAME+ "(" +
                 " _id integer primary key autoincrement, " +
+                TableIngredients.COLS.MEAL+" , "+
                 TableIngredients.COLS.NAME + " TEXT, " +
                 TableIngredients.COLS.QUANTITY +" , "+
                 TableIngredients.COLS.MEASURE +

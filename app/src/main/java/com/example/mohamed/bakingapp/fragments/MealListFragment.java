@@ -15,14 +15,17 @@ import android.widget.Toast;
 
 import com.example.mohamed.bakingapp.Adpter.MealAdapter;
 import com.example.mohamed.bakingapp.Api.Requests;
+import com.example.mohamed.bakingapp.ContentProvider.DBOPeration.Dboperation;
 import com.example.mohamed.bakingapp.ContentProvider.sherdPrefarnce.DataManager;
 import com.example.mohamed.bakingapp.Applcation.MyApp;
 import com.example.mohamed.bakingapp.R;
 import com.example.mohamed.bakingapp.model.Meal;
+import com.example.mohamed.bakingapp.model.MealIngredients;
 import com.example.mohamed.bakingapp.presenter.main.MainViewPresenter;
 import com.example.mohamed.bakingapp.ui.MealStepsActivity;
 import com.example.mohamed.bakingapp.view.MainView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,6 +80,19 @@ public class MealListFragment extends Fragment implements MainView,MealAdapter.M
         if (nColumns < 2) return 2;
         return nColumns;
     }
+
+    private void insert(List<Meal> meals){
+        List<String> list=new ArrayList<>();
+        Dboperation.getInstance(getActivity()).delete();
+        for (Meal meal:meals) {
+            list.add(meal.getName());
+            for (MealIngredients ingredients:meal.getIngredients()){
+                Dboperation.getInstance(getActivity()).insertMeal(ingredients,meal.getName());
+            }
+        }
+        dataManager.clear();
+        dataManager.saveMealName(list);
+    }
     void initSwipeRefreshLayout(){
 
         mSwipeRefreshLayout= (SwipeRefreshLayout) view.findViewById(R.id.srl);
@@ -121,6 +137,7 @@ public class MealListFragment extends Fragment implements MainView,MealAdapter.M
     @Override
     public void showMeals(List<Meal> meals) {
       mealAdapter.replaceData(meals);
+        insert(meals);
         dataManager.clear();
     }
 

@@ -18,11 +18,11 @@ public class DataManager {
     public void clear() {
         mSharedPrefsHelper.Clear();
     }
-    public void saveMealName(String meals) {
+    public void saveMealName(List<String> meals) {
         mSharedPrefsHelper.PutMealName(meals);
     }
 
-    public String getMealName() {
+    public List<String> getMealName() {
         return mSharedPrefsHelper.getMealName();
     }
 

@@ -20,12 +20,23 @@ public class MealStep  implements Serializable, Parcelable {
     private String videoURL;
     @SerializedName("shortDescription")
     private String shortDescription;
+    @SerializedName("thumbnailURL")
+    private String thumbnailURL;
 
-    public MealStep(int id, String description, String videoURL, String shortDescription) {
+    public MealStep(int id, String description, String videoURL, String shortDescription, String thumbnailURL) {
         this.id = id;
         this.description = description;
         this.videoURL = videoURL;
         this.shortDescription = shortDescription;
+        this.thumbnailURL = thumbnailURL;
+    }
+
+    public String getThumbnailURL() {
+        return thumbnailURL;
+    }
+
+    public void setThumbnailURL(String thumbnailURL) {
+        this.thumbnailURL = thumbnailURL;
     }
 
     protected MealStep(Parcel in) {

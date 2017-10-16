@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,16 +28,22 @@ public class SharedPrefsHelper {
     public void Clear(){
         mSharedPreferences.edit().clear().apply();
     }
-
-    public void PutMealName(String name){
+    public <T> void PutMealName(List<T> list){
         Editor prefsEditor = mSharedPreferences.edit();
-        prefsEditor.putString(TYPE, name);
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        prefsEditor.putString(TYPE,json);
         prefsEditor.commit();
     }
 
-    public String getMealName(){
-        String name = mSharedPreferences.getString(TYPE, "");
-         return name;
+
+    public  List<String> getMealName(){
+        Gson gson = new Gson();
+        List<String> productFromShared = new ArrayList<>();
+        String jsonPreferences = mSharedPreferences.getString(TYPE, "");
+        Type type = new TypeToken<List<String>>() {}.getType();
+        productFromShared = gson.fromJson(jsonPreferences, type);
+        return productFromShared;
     }
 
 

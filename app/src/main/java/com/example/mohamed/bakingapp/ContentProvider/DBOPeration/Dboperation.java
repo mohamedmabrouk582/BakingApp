@@ -10,9 +10,12 @@ import com.example.mohamed.bakingapp.ContentProvider.DbShema.Shema.TableIngredie
 import com.example.mohamed.bakingapp.ContentProvider.MealProvider;
 import com.example.mohamed.bakingapp.model.Meal;
 import com.example.mohamed.bakingapp.model.MealIngredients;
+import com.example.mohamed.bakingapp.model.mealInge;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by mohamed on 14/10/2017.
@@ -35,16 +38,38 @@ public class Dboperation {
         mDatabase=new DbHelper(mContext).getWritableDatabase();
     }
 
-    public void insertMeal(MealIngredients meal){
-        mContext.getContentResolver().insert(MealProvider.CONTENT_URI,getValues(meal));
+    public String insertMeal(MealIngredients meal,String mealname){
+        return mDatabase.insert(TableIngredients.NAME,null,getValues(meal,mealname))>0?
+                "done" :"not";
+     // mContext.getContentResolver().insert(MealProvider.CONTENT_URI,getValues(meal,mealname));
     }
     public void delete(){
         mContext.getContentResolver().delete(MealProvider.CONTENT_URI,null,null);
     }
 
-    public List<MealIngredients> getMeals(){
-        MealWrapper wrapper=new MealWrapper(mContext.getContentResolver().query(MealProvider.CONTENT_URI,null,null,null,null));
-        List<MealIngredients> list=new ArrayList<>();
+    public List<String> getMealName(){
+       Cursor cursor= mContext.getContentResolver().query(MealProvider.CONTENT_URI,new String[]{TableIngredients.COLS.MEAL},null,null,null);
+        Set<String> list=new HashSet<>();
+        cursor.moveToFirst();
+        try {
+            while (!cursor.isAfterLast()){
+                 list.add(cursor.getString(cursor.getColumnIndex(TableIngredients.COLS.MEAL)));
+                cursor.moveToNext();
+            }
+        }finally {
+            cursor.close();
+        }
+        List<String> list1=new ArrayList<>();
+        for (String s:list) {
+         list1.add(s);
+        }
+        return list1;
+    }
+
+    public List<mealInge> getMeals(String meal){
+      //  MealWrapper wrapper=new MealWrapper(mContext.getContentResolver().query(MealProvider.CONTENT_URI,null,TableIngredients.COLS.MEAL+" =? ",new String[]{meal},null));
+        MealWrapper wrapper=quary(TableIngredients.NAME,TableIngredients.COLS.MEAL+" =? ",new String[]{meal});
+        List<mealInge> list=new ArrayList<>();
         wrapper.moveToFirst();
         try {
             while (!wrapper.isAfterLast()){
@@ -71,8 +96,9 @@ public class Dboperation {
         return new MealWrapper(cursor);
     }
 
-    private ContentValues getValues(MealIngredients meal){
+    private ContentValues getValues(MealIngredients meal,String mealName){
         ContentValues values=new ContentValues();
+        values.put(TableIngredients.COLS.MEAL,mealName);
         values.put(TableIngredients.COLS.NAME,meal.getIngredient());
         values.put(TableIngredients.COLS.QUANTITY,meal.getQuantity());
         values.put(TableIngredients.COLS.MEASURE,meal.getMeasure());
