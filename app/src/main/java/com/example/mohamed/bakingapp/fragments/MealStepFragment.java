@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mohamed.bakingapp.R;
 import com.example.mohamed.bakingapp.model.MealStep;
@@ -46,7 +47,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
     private MealStep mealStep;
     private static String STEPS="STEPS";
     private TextView mealDes;
-    private static boolean play=false;
+    public static boolean play=false;
     private SimpleExoPlayerView mSimpleExoPlayerView;
     private SimpleExoPlayer player;
     public static long position=0;
@@ -79,12 +80,16 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
 
         if (!videoUrl.equals("")) {
             initializePlayer(Uri.parse(videoUrl));
+//            play=player.getPlayWhenReady();
+//            Toast.makeText(getActivity(), play+"", Toast.LENGTH_SHORT).show();
             mSimpleExoPlayerView.setVisibility(View.VISIBLE);
             restExoPlayerAfterRotation(0, false);
 
             if ((savedInstanceState != null) && savedInstanceState.containsKey("pos")) {
                 position = savedInstanceState.getLong("pos");
+                play=savedInstanceState.getBoolean("play");
                 player.seekTo(position);
+                player.setPlayWhenReady(play);
             }
 
         } else {
@@ -94,6 +99,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         if (savedInstanceState != null) {
             if (player != null) {
                 player.seekTo(position);
+                player.setPlayWhenReady(play);
             }
         }
         //----------------landscape--------------------------------------
@@ -108,7 +114,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
             mImageView.setVisibility(View.GONE);
             mSimpleExoPlayerView.setMinimumHeight(height);
             mSimpleExoPlayerView.setMinimumWidth(height);
-            restExoPlayerAfterRotation(position, true);
+            restExoPlayerAfterRotation(position, play);
         }
 
         return view;
@@ -118,6 +124,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         this.position = position;
         if (player != null) {
             player.seekTo(position);
+            player.setPlayWhenReady(play);
         }
     }
 
@@ -147,7 +154,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
                     new DefaultDataSourceFactory(this.getContext(), userAgent)
                     , new DefaultExtractorsFactory(), null, null);
             player.prepare(mediaSource);
-            player.setPlayWhenReady(true);
+           // player.setPlayWhenReady(true);
         }
     }
 
@@ -156,6 +163,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         super.onSaveInstanceState(outState);
         if (player != null)
        outState.putLong("pos", player.getCurrentPosition());
+      outState.putBoolean("play",play);
     }
 
     @Override
@@ -183,7 +191,6 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         if (player != null) {
             player.stop();
             player.release();
-            player.setPlayWhenReady(false);
         }
     }
 
@@ -223,6 +230,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (playbackState == PlaybackStateCompat.STATE_PLAYING || playbackState == PlaybackStateCompat.STATE_PAUSED) {
             position = player.getCurrentPosition();
+            play=player.getPlayWhenReady();
         }
     }
 
