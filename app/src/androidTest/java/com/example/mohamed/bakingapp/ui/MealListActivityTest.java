@@ -19,7 +19,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withParent;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -39,15 +38,8 @@ public class MealListActivityTest {
         recyclerView.perform(actionOnItemAtPosition(0, click()));
 
         ViewInteraction recyclerView2 = onView(
-                allOf(withId(R.id.meals_recycler_view),
-                        withParent(allOf(withId(R.id.srl),
-                                withParent(withId(R.id.Fragment_Container)))),
-                        isDisplayed()));
-        recyclerView2.perform(actionOnItemAtPosition(0, click()));
-
-        ViewInteraction recyclerView3 = onView(
                 allOf(withId(R.id.meals_steps_recycler_view), isDisplayed()));
-        recyclerView3.perform(actionOnItemAtPosition(0, click()));
+        recyclerView2.perform(actionOnItemAtPosition(0, click()));
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -74,13 +66,9 @@ public class MealListActivityTest {
             e.printStackTrace();
         }
 
-        ViewInteraction actionMenuItemView = onView(
-                allOf(withId(R.id.add_widget), withText("Add widget"), withContentDescription("Add widget"), isDisplayed()));
-        actionMenuItemView.perform(click());
-
-        ViewInteraction recyclerView4 = onView(
+        ViewInteraction recyclerView3 = onView(
                 allOf(withId(R.id.meals_steps_recycler_view), isDisplayed()));
-        recyclerView4.perform(actionOnItemAtPosition(1, click()));
+        recyclerView3.perform(actionOnItemAtPosition(1, click()));
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -104,13 +92,6 @@ public class MealListActivityTest {
                                 withParent(withId(R.id.action_bar_container)))),
                         isDisplayed()));
         appCompatImageButton3.perform(click());
-
-        ViewInteraction appCompatImageButton4 = onView(
-                allOf(withContentDescription("Navigate up"),
-                        withParent(allOf(withId(R.id.action_bar),
-                                withParent(withId(R.id.action_bar_container)))),
-                        isDisplayed()));
-        appCompatImageButton4.perform(click());
 
     }
 

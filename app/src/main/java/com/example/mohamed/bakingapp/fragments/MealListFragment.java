@@ -1,6 +1,7 @@
 package com.example.mohamed.bakingapp.fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -39,6 +40,10 @@ public class MealListFragment extends Fragment implements MainView,MealAdapter.M
     private MealAdapter mealAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private MainViewPresenter mainViewPresenter;
+    private String SAVED_RECYCLER_VIEW_STATUS_ID="id";
+    private int lastFirstVisiblePosition=0;
+    private String STEPS="step";
+    private List<Meal> meals=new ArrayList<>();
 
 
     @Override
@@ -61,6 +66,7 @@ public class MealListFragment extends Fragment implements MainView,MealAdapter.M
     private void intiRecyler(){
         mealAdapter=new MealAdapter(getActivity(),this);
         mRecyclerView= (RecyclerView) view.findViewById(R.id.meals_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
@@ -83,6 +89,7 @@ public class MealListFragment extends Fragment implements MainView,MealAdapter.M
 
     private void insert(List<Meal> meals){
         List<String> list=new ArrayList<>();
+        this.meals=meals;
         Dboperation.getInstance(getActivity()).delete();
         for (Meal meal:meals) {
             list.add(meal.getName());
@@ -150,4 +157,25 @@ public class MealListFragment extends Fragment implements MainView,MealAdapter.M
     public void onMovieItemClick(Meal item) {
      mainViewPresenter.clickMealItem(item);
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
+        outState.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>) meals);
+
+        //
+        lastFirstVisiblePosition =((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+
+        (mRecyclerView.getLayoutManager()).scrollToPosition(lastFirstVisiblePosition);
+
+        super.onViewStateRestored(savedInstanceState);
+    }
+
 }
