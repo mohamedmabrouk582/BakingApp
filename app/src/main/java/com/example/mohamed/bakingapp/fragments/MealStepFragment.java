@@ -46,6 +46,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
     private MealStep mealStep;
     private static String STEPS="STEPS";
     private TextView mealDes;
+    private static boolean play=false;
     private SimpleExoPlayerView mSimpleExoPlayerView;
     private SimpleExoPlayer player;
     public static long position=0;
@@ -93,7 +94,6 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         if (savedInstanceState != null) {
             if (player != null) {
                 player.seekTo(position);
-                player.setPlayWhenReady(true);
             }
         }
         //----------------landscape--------------------------------------
@@ -109,7 +109,6 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
             mSimpleExoPlayerView.setMinimumHeight(height);
             mSimpleExoPlayerView.setMinimumWidth(height);
             restExoPlayerAfterRotation(position, true);
-
         }
 
         return view;
@@ -119,7 +118,6 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         this.position = position;
         if (player != null) {
             player.seekTo(position);
-            player.setPlayWhenReady(playWhenReady);
         }
     }
 
@@ -157,7 +155,7 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (player != null)
-            outState.putLong("pos", player.getCurrentPosition());
+       outState.putLong("pos", player.getCurrentPosition());
     }
 
     @Override
@@ -185,8 +183,10 @@ public class MealStepFragment extends Fragment  implements StepView ,ExoPlayer.E
         if (player != null) {
             player.stop();
             player.release();
+            player.setPlayWhenReady(false);
         }
     }
+
 
     @Override
     public void onStop() {

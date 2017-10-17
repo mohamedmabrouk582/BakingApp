@@ -153,7 +153,6 @@ public class MealStepListFragment extends Fragment  implements MealView,MealStep
         outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
         outState.putParcelableArrayList(STEPS,meal.getSteps());
 
-        //
         lastFirstVisiblePosition =((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
 
 

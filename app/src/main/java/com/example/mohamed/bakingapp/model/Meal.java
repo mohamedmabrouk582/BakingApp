@@ -48,8 +48,6 @@ public class Meal implements Serializable, Parcelable {
         id = in.readInt();
         name = in.readString();
         image = in.readString();
-        steps=in.readArrayList(null);
-        ingredients=in.readArrayList(null);
     }
 
     public static final Creator<Meal> CREATOR = new Creator<Meal>() {
@@ -114,7 +112,5 @@ public class Meal implements Serializable, Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(image);
-        dest.writeList(steps);
-        dest.writeList(ingredients);
     }
 }
